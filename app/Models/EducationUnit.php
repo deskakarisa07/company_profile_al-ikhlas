@@ -20,7 +20,7 @@ class EducationUnit extends Model
         }
 
         return str_starts_with($this->image, 'education-units/')
-            ? Storage::url($this->image)
+            ? Storage::disk('public')->url($this->image)
             : asset('images/'.$this->image);
     }
 }

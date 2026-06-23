@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Blog;
 use App\Models\CompanyProfile;
 use App\Models\ContactMessage;
+use App\Models\EducationUnit;
+use App\Models\Gallery;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -66,6 +68,40 @@ class AdminBackendTest extends TestCase
 
         $article = Blog::where('title', 'Artikel Baru')->firstOrFail();
         Storage::disk('public')->assertExists($article->image);
+        $this->assertStringStartsWith('/storage/blogs/', $article->image_url);
+    }
+
+    public function test_admin_can_replace_and_delete_article_image(): void
+    {
+        Storage::fake('public');
+        $admin = $this->admin();
+        Storage::disk('public')->put('blogs/lama.png', 'old');
+        $article = Blog::create([
+            'title' => 'Artikel Lama',
+            'category' => 'Kegiatan',
+            'description' => 'Isi artikel.',
+            'status' => 'published',
+            'image' => 'blogs/lama.png',
+        ]);
+
+        $this->actingAs($admin)->put(route('admin.articles.update', $article), [
+            'title' => 'Artikel Baru',
+            'category' => 'Kegiatan',
+            'description' => 'Isi artikel.',
+            'status' => 'published',
+            'image' => UploadedFile::fake()->image('baru.png'),
+        ])->assertRedirect(route('admin.articles.index'));
+
+        Storage::disk('public')->assertMissing('blogs/lama.png');
+        Storage::disk('public')->assertExists($article->fresh()->image);
+
+        $newImage = $article->fresh()->image;
+        $this->actingAs($admin)
+            ->delete(route('admin.articles.destroy', $article))
+            ->assertSessionHas('success');
+
+        Storage::disk('public')->assertMissing($newImage);
+        $this->assertDatabaseMissing('blogs', ['id' => $article->id]);
     }
 
     public function test_article_validation_is_applied(): void
@@ -137,6 +173,98 @@ class AdminBackendTest extends TestCase
 
         Storage::disk('public')->assertMissing('profiles/logo-lama.png');
         Storage::disk('public')->assertExists($profile->fresh()->logo);
+        $this->assertStringStartsWith('/storage/profiles/', $profile->fresh()->logo_url);
+    }
+
+    public function test_admin_can_create_replace_and_delete_gallery_image(): void
+    {
+        Storage::fake('public');
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->post(route('admin.galleries.store'), [
+            'title' => 'Galeri Baru',
+            'description' => 'Dokumentasi kegiatan.',
+            'event_date' => '2026-06-21',
+            'status' => 'published',
+            'sort_order' => 1,
+            'image' => UploadedFile::fake()->image('galeri.jpg'),
+        ])->assertRedirect(route('admin.galleries.index'));
+
+        $gallery = Gallery::where('title', 'Galeri Baru')->firstOrFail();
+        $oldImage = $gallery->image;
+        Storage::disk('public')->assertExists($oldImage);
+        $this->assertStringStartsWith('/storage/galleries/', $gallery->image_url);
+
+        $this->actingAs($admin)->put(route('admin.galleries.update', $gallery), [
+            'title' => 'Galeri Diperbarui',
+            'description' => 'Dokumentasi kegiatan.',
+            'event_date' => '2026-06-21',
+            'status' => 'published',
+            'sort_order' => 1,
+            'image' => UploadedFile::fake()->image('galeri-baru.png'),
+        ])->assertRedirect(route('admin.galleries.index'));
+
+        Storage::disk('public')->assertMissing($oldImage);
+        Storage::disk('public')->assertExists($gallery->fresh()->image);
+
+        $newImage = $gallery->fresh()->image;
+        $this->actingAs($admin)
+            ->delete(route('admin.galleries.destroy', $gallery))
+            ->assertSessionHas('success');
+
+        Storage::disk('public')->assertMissing($newImage);
+        $this->assertDatabaseMissing('galleries', ['id' => $gallery->id]);
+    }
+
+    public function test_admin_can_create_replace_and_delete_education_unit_image(): void
+    {
+        Storage::fake('public');
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->post(route('admin.units.store'), [
+            'name' => 'SMA Al Ikhlas',
+            'short_description' => 'Deskripsi singkat.',
+            'description' => 'Deskripsi lengkap unit pendidikan.',
+            'status' => 'published',
+            'sort_order' => 4,
+            'image' => UploadedFile::fake()->image('unit.jpg'),
+        ])->assertRedirect(route('admin.units.index'));
+
+        $unit = EducationUnit::where('name', 'SMA Al Ikhlas')->firstOrFail();
+        $oldImage = $unit->image;
+        Storage::disk('public')->assertExists($oldImage);
+        $this->assertStringStartsWith('/storage/education-units/', $unit->image_url);
+
+        $this->actingAs($admin)->put(route('admin.units.update', $unit), [
+            'name' => 'SMA Al Ikhlas',
+            'short_description' => 'Deskripsi singkat.',
+            'description' => 'Deskripsi lengkap unit pendidikan.',
+            'status' => 'published',
+            'sort_order' => 4,
+            'image' => UploadedFile::fake()->image('unit-baru.png'),
+        ])->assertRedirect(route('admin.units.index'));
+
+        Storage::disk('public')->assertMissing($oldImage);
+        Storage::disk('public')->assertExists($unit->fresh()->image);
+
+        $newImage = $unit->fresh()->image;
+        $this->actingAs($admin)
+            ->delete(route('admin.units.destroy', $unit))
+            ->assertSessionHas('success');
+
+        Storage::disk('public')->assertMissing($newImage);
+        $this->assertDatabaseMissing('education_units', ['id' => $unit->id]);
+    }
+
+    public function test_seeded_public_images_keep_using_public_images_directory(): void
+    {
+        $blog = new Blog(['image' => 'blog1.png']);
+        $unit = new EducationUnit(['image' => 'tk.png']);
+        $profile = new CompanyProfile(['logo' => 'logo.png']);
+
+        $this->assertStringEndsWith('/images/blog/blog1.png', $blog->image_url);
+        $this->assertStringEndsWith('/images/tk.png', $unit->image_url);
+        $this->assertStringEndsWith('/images/logo.png', $profile->logo_url);
     }
 
     public function test_company_profile_crud_routes_are_not_available(): void

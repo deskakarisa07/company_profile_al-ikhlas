@@ -139,7 +139,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('gallery') }}" class="nav-link {{ request()->is('gallery') ? 'active' : '' }}">Galeri</a>
+                        <a href="{{ route('gallery') }}"
+                            class="nav-link {{ request()->is('gallery') ? 'active' : '' }}">Galeri</a>
                     </li>
 
                     <li class="nav-item">

@@ -107,8 +107,8 @@
                 </div>
 
                 <div class="col-md-6 text-center fade-up">
-                    <img src="{{ $company?->logo_url ?? asset('images/logo.png') }}" class="img-fluid img-modern shadow p-3 bg-white"
-                        style="max-height:320px;">
+                    <img src="{{ $company?->logo_url ?? asset('images/logo.png') }}"
+                        class="img-fluid img-modern shadow p-3 bg-white" style="max-height:320px;">
                 </div>
 
             </div>
@@ -136,7 +136,13 @@
                 <div class="col-md-6 fade-up">
                     <div class="card card-modern p-4 h-100">
                         <h4 class="fw-bold text-success mb-3">Misi</h4>
-                        <ul class="text-muted ps-3 mb-0">@foreach(preg_split('/\r\n|\r|\n/', $company?->mission ?? '') as $mission)@if(trim($mission))<li class="mb-2">{{ $mission }}</li>@endif @endforeach</ul>
+                        <ul class="text-muted ps-3 mb-0">
+                            @foreach (preg_split('/\r\n|\r|\n/', $company?->mission ?? '') as $mission)
+                                @if (trim($mission))
+                                    <li class="mb-2">{{ $mission }}</li>
+                                @endif
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
 

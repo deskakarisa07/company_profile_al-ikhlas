@@ -29,7 +29,7 @@ class Blog extends Model
         $image = trim($this->image);
 
         return str_starts_with($image, 'blogs/')
-            ? Storage::url($image)
+            ? Storage::disk('public')->url($image)
             : asset('images/blog/'.$image);
     }
 }

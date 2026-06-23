@@ -141,8 +141,9 @@
                     </div>
 
                     <div class="mt-4">
-                        <iframe src="{{ $company?->map_url ?? 'https://www.google.com/maps?q=Tangerang&output=embed' }}" width="100%" height="260"
-                            style="border:0; border-radius:14px;" allowfullscreen="" loading="lazy">
+                        <iframe src="{{ $company?->map_url ?? 'https://www.google.com/maps?q=Tangerang&output=embed' }}"
+                            width="100%" height="260" style="border:0; border-radius:14px;" allowfullscreen=""
+                            loading="lazy">
                         </iframe>
                     </div>
                 </div>
@@ -151,23 +152,36 @@
                     <div class="card card-modern p-4">
                         <h4 class="fw-bold text-success mb-3">Kirim Pesan</h4>
 
-                        @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
-                        @if($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+                        @if (session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('contact.store') }}">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
-                                <input type="text" name="name" value="{{ old('name') }}" class="form-control" placeholder="Masukkan nama" required>
+                                <input type="text" name="name" value="{{ old('name') }}" class="form-control"
+                                    placeholder="Masukkan nama" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Masukkan email" required>
+                                <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                                    placeholder="Masukkan email" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Subjek</label>
-                                <input type="text" name="subject" value="{{ old('subject') }}" class="form-control" placeholder="Subjek pesan" required>
+                                <input type="text" name="subject" value="{{ old('subject') }}" class="form-control"
+                                    placeholder="Subjek pesan" required>
                             </div>
 
                             <div class="mb-3">

@@ -1,9 +1,33 @@
 @extends('layouts.admin')
-@section('title',$unit->exists?'Edit Unit':'Tambah Unit')
-@section('page-title',$unit->exists?'Edit Unit Pendidikan':'Tambah Unit Pendidikan')
+@section('title', $unit->exists ? 'Edit Unit' : 'Tambah Unit')
+@section('page-title', $unit->exists ? 'Edit Unit Pendidikan' : 'Tambah Unit Pendidikan')
 @section('content')
-<div class="card p-4"><form method="POST" enctype="multipart/form-data" action="{{ $unit->exists?route('admin.units.update',$unit):route('admin.units.store') }}">@csrf @if($unit->exists)@method('PUT')@endif<div class="row g-3">
-<div class="col-md-8"><label class="form-label">Nama Unit</label><input class="form-control" name="name" value="{{ old('name',$unit->name) }}" required></div><div class="col-md-4"><label class="form-label">Urutan</label><input class="form-control" type="number" min="0" name="sort_order" value="{{ old('sort_order',$unit->sort_order??0) }}" required></div>
-<div class="col-12"><label class="form-label">Deskripsi Singkat</label><textarea class="form-control" rows="2" name="short_description" required>{{ old('short_description',$unit->short_description) }}</textarea></div><div class="col-12"><label class="form-label">Deskripsi Lengkap</label><textarea class="form-control" rows="6" name="description" required>{{ old('description',$unit->description) }}</textarea></div>
-<div class="col-md-6"><label class="form-label">Gambar</label><input class="form-control" type="file" name="image" accept="image/*" {{ $unit->exists?'':'required' }}></div><div class="col-md-6"><label class="form-label">Status</label><select class="form-select" name="status"><option value="published" @selected(old('status',$unit->status)==='published')>Published</option><option value="draft" @selected(old('status',$unit->status)==='draft')>Draft</option></select></div></div><div class="mt-4"><button class="btn btn-success">Simpan</button> <a class="btn btn-secondary" href="{{ route('admin.units.index') }}">Batal</a></div></form></div>
+    <div class="card p-4">
+        <form method="POST" enctype="multipart/form-data"
+            action="{{ $unit->exists ? route('admin.units.update', $unit) : route('admin.units.store') }}">@csrf @if ($unit->exists)
+                @method('PUT')
+            @endif
+            <div class="row g-3">
+                <div class="col-md-8"><label class="form-label">Nama Unit</label><input class="form-control" name="name"
+                        value="{{ old('name', $unit->name) }}" required></div>
+                <div class="col-md-4"><label class="form-label">Urutan</label><input class="form-control" type="number"
+                        min="0" name="sort_order" value="{{ old('sort_order', $unit->sort_order ?? 0) }}" required>
+                </div>
+                <div class="col-12"><label class="form-label">Deskripsi Singkat</label>
+                    <textarea class="form-control" rows="2" name="short_description" required>{{ old('short_description', $unit->short_description) }}</textarea>
+                </div>
+                <div class="col-12"><label class="form-label">Deskripsi Lengkap</label>
+                    <textarea class="form-control" rows="6" name="description" required>{{ old('description', $unit->description) }}</textarea>
+                </div>
+                <div class="col-md-6"><label class="form-label">Gambar</label><input class="form-control" type="file"
+                        name="image" accept="image/*" {{ $unit->exists ? '' : 'required' }}></div>
+                <div class="col-md-6"><label class="form-label">Status</label><select class="form-select" name="status">
+                        <option value="published" @selected(old('status', $unit->status) === 'published')>Published</option>
+                        <option value="draft" @selected(old('status', $unit->status) === 'draft')>Draft</option>
+                    </select></div>
+            </div>
+            <div class="mt-4"><button class="btn btn-success">Simpan</button> <a class="btn btn-secondary"
+                    href="{{ route('admin.units.index') }}">Batal</a></div>
+        </form>
+    </div>
 @endsection

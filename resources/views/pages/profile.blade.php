@@ -102,8 +102,23 @@
         <div class="container">
 
             @forelse($units as $unit)
-            <div class="mb-5 card-section"><div class="row align-items-center g-5 {{ $loop->even ? 'flex-md-row-reverse' : '' }}"><div class="col-md-5 text-center {{ $loop->even ? 'fade-right' : 'fade-left' }}">@if($unit->image_url)<img src="{{ $unit->image_url }}" class="img-fluid img-modern" style="max-height:320px;" alt="{{ $unit->name }}">@endif</div><div class="col-md-7 {{ $loop->even ? 'fade-left' : 'fade-right' }}"><h3 class="fw-bold text-success">{{ $unit->name }}</h3><p class="text-muted mt-3">{{ $unit->short_description }}</p><p class="text-muted" style="white-space:pre-line">{{ $unit->description }}</p></div></div></div>
-            @empty<div class="text-center text-muted">Belum ada data unit pendidikan.</div>@endforelse
+                <div class="mb-5 card-section">
+                    <div class="row align-items-center g-5 {{ $loop->even ? 'flex-md-row-reverse' : '' }}">
+                        <div class="col-md-5 text-center {{ $loop->even ? 'fade-right' : 'fade-left' }}">
+                            @if ($unit->image_url)
+                                <img src="{{ $unit->image_url }}" class="img-fluid img-modern" style="max-height:320px;"
+                                    alt="{{ $unit->name }}">
+                            @endif
+                        </div>
+                        <div class="col-md-7 {{ $loop->even ? 'fade-left' : 'fade-right' }}">
+                            <h3 class="fw-bold text-success">{{ $unit->name }}</h3>
+                            <p class="text-muted mt-3">{{ $unit->short_description }}</p>
+                            <p class="text-muted" style="white-space:pre-line">{{ $unit->description }}</p>
+                        </div>
+                    </div>
+                </div>
+            @empty<div class="text-center text-muted">Belum ada data unit pendidikan.</div>
+            @endforelse
 
         </div>
     </section>

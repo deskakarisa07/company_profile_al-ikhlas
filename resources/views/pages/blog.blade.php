@@ -128,7 +128,9 @@
                         <div class="row g-0 align-items-center blog-card">
 
                             <div class="col-md-4 blog-img-wrapper">
-                                @if($blog->image_url)<img src="{{ $blog->image_url }}" class="blog-img" alt="{{ $blog->title }}">@endif
+                                @if ($blog->image_url)
+                                    <img src="{{ $blog->image_url }}" class="blog-img" alt="{{ $blog->title }}">
+                                @endif
                             </div>
 
                             <div class="col-md-8">

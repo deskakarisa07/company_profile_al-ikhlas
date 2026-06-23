@@ -115,7 +115,9 @@
 
             <div class="mb-5 text-center fade-up">
                 <div class="blog-img-wrapper">
-                    @if($blog->image_url)<img src="{{ $blog->image_url }}" class="blog-detail-img" alt="{{ $blog->title }}">@endif
+                    @if ($blog->image_url)
+                        <img src="{{ $blog->image_url }}" class="blog-detail-img" alt="{{ $blog->title }}">
+                    @endif
                 </div>
             </div>
 

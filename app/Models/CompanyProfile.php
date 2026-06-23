@@ -23,7 +23,7 @@ class CompanyProfile extends Model
         }
 
         return str_starts_with($this->logo, 'profiles/')
-            ? Storage::url($this->logo)
+            ? Storage::disk('public')->url($this->logo)
             : asset('images/'.$this->logo);
     }
 

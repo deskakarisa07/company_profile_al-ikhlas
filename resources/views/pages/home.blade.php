@@ -238,7 +238,23 @@
                 <p class="text-muted">Program pendidikan yang kami sediakan</p>
             </div>
 
-            <div class="row g-4">@forelse($units as $unit)<div class="col-md-4 fade-up"><div class="edu-card">@if($unit->image_url)<img src="{{ $unit->image_url }}" class="edu-img" alt="{{ $unit->name }}">@endif<div class="edu-overlay"></div><div class="edu-content"><h5 class="fw-bold">{{ $unit->name }}</h5><p>{{ $unit->short_description }}</p></div></div></div>@empty<div class="text-center text-muted">Belum ada unit pendidikan.</div>@endforelse</div>
+            <div class="row g-4">
+                @forelse($units as $unit)
+                    <div class="col-md-4 fade-up">
+                        <div class="edu-card">
+                            @if ($unit->image_url)
+                                <img src="{{ $unit->image_url }}" class="edu-img" alt="{{ $unit->name }}">
+                            @endif
+                            <div class="edu-overlay">
+                            </div>
+                            <div class="edu-content">
+                                <h5 class="fw-bold">{{ $unit->name }}</h5>
+                                <p>{{ $unit->short_description }}</p>
+                            </div>
+                        </div>
+                </div>@empty<div class="text-center text-muted">Belum ada unit pendidikan.</div>
+                @endforelse
+            </div>
 
         </div>
     </section>
