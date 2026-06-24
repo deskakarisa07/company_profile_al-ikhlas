@@ -21,7 +21,7 @@
                 <tbody>
                     @forelse($galleries as $gallery)
                         <tr>
-                            <td><img src="{{ $gallery->image_url }}"></td>
+                            <td><img src="{{ $gallery->image_url }}" alt="{{ $gallery->title }}" style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px;"></td>
                             <td>{{ $gallery->title }}</td>
                             <td>{{ $gallery->event_date?->format('d M Y') ?? '-' }}</td>
                             <td>{{ $gallery->sort_order }}</td>

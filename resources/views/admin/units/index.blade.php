@@ -22,7 +22,7 @@
                         <tr>
                             <td>
                                 @if ($unit->image_url)
-                                    <img src="{{ $unit->image_url }}">
+                                    <img src="{{ $unit->image_url }}" alt="{{ $unit->name }}" style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px;">
                                 @endif
                             </td>
                             <td>{{ $unit->name }}</td>

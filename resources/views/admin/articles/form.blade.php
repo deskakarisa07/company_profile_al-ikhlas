@@ -20,7 +20,7 @@
                         {{ $article->exists ? '(kosongkan jika tidak diganti)' : '' }}</label><input class="form-control"
                         type="file" name="image" accept="image/*" {{ $article->exists ? '' : 'required' }}>
                     @if ($article->image_url)
-                        <img src="{{ $article->image_url }}" class="mt-2 rounded" style="max-height:120px">
+                        <img src="{{ $article->image_url }}" alt="Preview" class="mt-2 rounded" style="max-height: 120px; max-width: 100%; object-fit: cover;">
                     @endif
                 </div>
                 <div class="col-md-6"><label class="form-label">Status</label><select class="form-select" name="status">
